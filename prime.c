@@ -4,14 +4,11 @@
    Run by:     ./prime
 */
 
+#include "primality.c"
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 #include <time.h>
-
-// function prototypes
-bool isPrime(long int);
 
 int main(int argc, char * argv[]) {
 
@@ -27,11 +24,18 @@ int main(int argc, char * argv[]) {
   printf("Difference between primes:\n");
   for (i = 1; i <= COUNT_TO; i++) {
     if (isPrime(i)){
-      if (lineCount > 19) {printf("    Primes between %d and %d\n", track[3], i); lineCount = 0;}
+      if (lineCount > 19) {
+	printf("    Primes between %d and %d\n", track[3], i);
+	lineCount = 0;
+      }
       printf("%*d ", 3, i - track[0]); lineCount++;
-      if (lineCount == 1) {track[3] = i;}
+      if (lineCount == 1) {
+	track[3] = i;
+      }
       track[1] = track[1] + (i - track[0]);
-      if (i - track[0] > max) {max = i - track[0];}
+      if (i - track[0] > max) {
+	max = i - track[0];
+      }
       track[0] = i;
       track[2]++;
     }
@@ -43,7 +47,7 @@ int main(int argc, char * argv[]) {
   printf("Average difference between primes: %0.3lf\n", (double) track[1] / (double) track[2]);
   printf("Max difference between primes: %d\n\n", max);
 
-  }
+
 
   /*
   long int test = 1;
@@ -58,6 +62,8 @@ int main(int argc, char * argv[]) {
     } // end if (is...
   }
   */
+
+
   
   /*
   if (argc != 3) {
@@ -96,50 +102,3 @@ int main(int argc, char * argv[]) {
 */
 
 }
-
-/*******************************************************************
- * Function isPrime returns true if value is prime, else returns    *
-    false                                                           *
-   Note: Very, very inefficient. Right now.                         *
-   Another Note: I define PRIME as any number that is EVENLY        *
-    PARTITIONED by the UNIT and ONLY by the unit. Screw 'em for not *
-    including 1.                                                    *
- ********************************************************************/
-bool isPrime(long int n) {
-
-  /* Vinny's notes
-
-     1.)
-     Idea Tested: Check primality of large ints starting from n/2 and decrement until you find a divisor.
-     Why?: Maybe large numbers tend to have larger divisors than small numbers on average
-     Test Results: Divisors look like they tend to be small numbers, so it didn't do much good to check from n/2 down, things got very  much slower
-     Lessons learned: Still might help a bit if we can continue to check up from 1 with one core and check down from n/2 with another somehow. (Hopefully learn how to in parallel programming) Kind of a divide and conquer method or something.
-
-     2.)
-     Idea Tested: I want proof that 'if(i > (n / 2)) {i = n; break;}' actually saves CPU time
-     Why?: Because it should, I want proof.
-     Test Results:
-      WITHOUT IF (Ran Frequency Test by 1000 to 500000) - 115.540s
-      WITH IF (Ran Frequency Test by 1000 to 500000) - 63.820s
-     Lessons learned: The if statement is obviously beneficial to the algorithm. Told ya so.
-  
-     3.)
-     Idea Tested: Big Naturals
-
-     4.) Max difference between primes under 1mil is 114
- */
-
-  long int i = 2;
-
-  while (n % i != 0) {
-    if(i > (n / 2)) {i = n; break;} // get rid of useless maths
-    i++;
-  } // end while (n...
-  if (i < n) {
-    return false;
-  }
-  else {
-    return true;
-  }
-
-} // end isPrime()
