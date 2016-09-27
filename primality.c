@@ -1,8 +1,8 @@
 #include <stdbool.h>
 
-/**********************************************************************
-* Function isPrime returns true if value is prime, else returns false *
-**********************************************************************/
+/******************************************************************
+* Function isPrime returns true if n is prime, else returns false *
+******************************************************************/
 bool isPrime(long int n) {
 
   long int i = 2;
