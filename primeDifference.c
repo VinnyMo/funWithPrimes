@@ -1,6 +1,6 @@
 /* Some fun with prime numbers
    Author:     Vincent T. Mossman
-   Compile by: gcc -o prime prime.c
+   Compile by: gcc -o primeDifference primeDifference.c
    Run by:     ./prime
 */
 
