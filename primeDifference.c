@@ -40,6 +40,7 @@ int main(int argc, char * argv[]) {
 	max = i - track[0];
       }
 
+      /*
       //triSeries test
       if (triSeries[1] == i - track[0]) {
 	if (findUnique[lastUnique - 1] < i - track[0]) {
@@ -63,6 +64,33 @@ int main(int argc, char * argv[]) {
 	else {
 	  triSeries[0] = i - track[0];
 	} //end triSeries test
+      */
+      
+      //biSeries test
+      if (triSeries[0] == i - track[0]) {
+
+	int k, previouslyFound = 0;
+	for (k = 0; k < lastUnique; k++) {
+	  if (findUnique[k] == i - track[0]) {
+	    previouslyFound = 1;
+	    break;
+	  }
+	}
+
+        if (previouslyFound == 0) {
+          printf("{%d %d} \n", i - track[0], i - track[0]);
+          findUnique[lastUnique] = i - track[0];
+          lastUnique++;
+        }
+
+	othersCounter++;
+
+        triSeries[0] = 0;
+        triSeries[1] = 0;
+      }
+      else {
+	triSeries[0] = i - track[0];
+      }
 
       track[0] = i;
       track[2]++;
@@ -75,9 +103,13 @@ int main(int argc, char * argv[]) {
   printf("\nCPU execution time: %0.3lfs\n", time_spent);
   printf("Average difference between primes: %0.3lf\n", (double) track[1] / (double) track[2]);
   printf("Max difference between primes: %d\n\n", max);
-  
+
+  /*  
   //triSeries results
   printf("Lucifer Prime Series: %d\n", luciferCounter);
   printf("All other tri-series: %d\n\n", othersCounter);
+  */
 
+  //biSeries results
+  printf("All bi-series: %d\n\n", othersCounter);
 }
