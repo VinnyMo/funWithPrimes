@@ -35,6 +35,7 @@ int main(int argc, char * argv[]) {
 	
   for (i = 1; i <= COUNT_TO; i++) {
     if (isPrime(i)){
+      printf("Test at prime %d\n", i);
       track[1] = track[1] + (i - track[0]);
       if (i - track[0] > max) {
 	max = i - track[0];
