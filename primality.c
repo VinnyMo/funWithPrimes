@@ -5,7 +5,7 @@
 
 void * threadPartialTest(void * args);
 bool globalIsPrime;
-int numberOfThreads = 16;
+int numberOfThreads = 2;
 long int globalN = true;
 pthread_mutex_t updateIsPrimeLock;
 
@@ -21,7 +21,7 @@ bool isPrime(long int n) {
 
   for (i = 0; i <  numberOfThreads; i ++) {
     if (errorCode = pthread_create(&threadHandles[i], NULL, threadPartialTest, (void *) i) != 0) {
-      printf("pthread %d failed to be created with error code %d\n", i, errorCode);
+     printf("pthread %d failed to be created with error code %d\n", i, errorCode);
     }
   }
 
@@ -38,17 +38,17 @@ bool isPrime(long int n) {
 void * threadPartialTest(void * rank) {
 
   long int n = globalN;
-  long int i = 2 + (((long) rank + 1) * (globalN / 2 / numberOfThreads));
+  long int i = 2 + ((long) rank * (n / 2 / numberOfThreads));
 
   while (n % i != 0) {
-    if (i > (globalN / 2)) {
+    if (i > (n / 2)) {
       i = n;
       break;
     }
     i++;
   }
-  if (i < globalN) {
-    globalN = false;
+  if (i < n) {
+    globalIsPrime = false;
   }
  
 }
