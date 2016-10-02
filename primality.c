@@ -4,10 +4,10 @@
 #include <stdio.h>
 
 void * threadPartialTest(void * args);
-bool globalIsPrime;
-int numberOfThreads = 2;
-long int globalN = true;
-pthread_mutex_t updateIsPrimeLock;
+bool globalIsPrime = true;
+int numberOfThreads = 1;
+long int globalN;
+//pthread_mutex_t updateIsPrimeLock;
 
 /******************************************************************
 * Function isPrime returns true if n is prime, else returns false *
@@ -16,7 +16,8 @@ bool isPrime(long int n) {
 
   globalN = n;
 
-  int i, errorCode;
+  long i;
+  int errorCode;
   pthread_t * threadHandles = (pthread_t *) malloc(numberOfThreads * sizeof(pthread_t));
 
   for (i = 0; i <  numberOfThreads; i ++) {
@@ -31,14 +32,14 @@ bool isPrime(long int n) {
     }
   }
 
-  return globalN;
+  return globalIsPrime;
 
 }
 
 void * threadPartialTest(void * rank) {
 
   long int n = globalN;
-  long int i = 2 + ((long) rank * (n / 2 / numberOfThreads));
+  long int i = 2;
 
   while (n % i != 0) {
     if (i > (n / 2)) {

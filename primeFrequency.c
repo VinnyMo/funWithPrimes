@@ -28,7 +28,7 @@ int main(int argc, char * argv[]) {
   printf("\n");
   for (i = 1; i <= COUNT_TO; i++) {
 
-    if (isPrime(i)){primeCount++;}
+    if (isPrime(i)){primeCount++; printf("%d is prime", i);}
     if (i % COUNT_BY == 0) {
       printf("%d primes between %d and %d (inclusive)\n", primeCount, startCount, i);
 
