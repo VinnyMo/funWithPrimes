@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>
 
 /******************************************************************
 * Function isPrime returns true if n is prime, else returns false *
@@ -39,12 +40,16 @@ int main(int argc, char * argv[]) {
 
   printf("{");
 
+  clock_t begin = clock();
   for (i = 1;(int) i <= (int) test; i++) {
     if (isPrime(i)) {
       printf("} {");
     }
   }
 
-  printf("\n");
+  clock_t end = clock();
+  double time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
+
+  printf("\nCPU execution time: %0.3fs\n\n", time_spent);
 
 }
