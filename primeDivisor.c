@@ -12,12 +12,12 @@ bool isPrime(long int n) {
 
   while (n % i != 0) {
     if (i > (n / 2)) {
-        i = n; 
+        i = n;
         break;
     }
     i++;
   }
-  printf("%d", i);
+  printf("%ld", i);
   if (i < n) {
     printf(" ");
     return false;
@@ -36,7 +36,7 @@ int main(int argc, char * argv[]) {
   }
 
   long int test, i;
-  sscanf(argv[1], "%d", &test);
+  sscanf(argv[1], "%ld", &test);
 
   printf("{");
 

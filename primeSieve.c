@@ -12,7 +12,7 @@ int main(int argc, char * argv[]) {
     exit(-1);
   }
 
-  sscanf(argv[1], "%d", &test);
+  sscanf(argv[1], "%ld", &test);
 
   sieve = (long unsigned int *) malloc(sizeof(long unsigned int)*test);
 
@@ -36,10 +36,10 @@ int main(int argc, char * argv[]) {
   for (i = 0; i < test; i++) {
     if (sieve[i] >= lastPrime) {
       lastPrime = sieve[i];
-      printf("%d} {", sieve[i]); 
+      printf("%ld} {", sieve[i]);
     }
     else {
-      printf("%d ", sieve[i]);
+      printf("%ld ", sieve[i]);
     }
   }
 
