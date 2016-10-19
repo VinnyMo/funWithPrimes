@@ -4,11 +4,11 @@
    Run by:     ./prime
 */
 
+#include "primality.c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "eratosthenes.c"
 
 int main(int argc, char * argv[]) {
 
@@ -18,35 +18,30 @@ int main(int argc, char * argv[]) {
   }
 
   int COUNT_TO, COUNT_BY;
-  long unsigned int *sieve;
   sscanf(argv[1], "%d", &COUNT_TO);
   sscanf(argv[2], "%d", &COUNT_BY);
   int stats[3] = {COUNT_BY + 1, 0, 0}; //FREQ MIN, FREQ MAX, TOT
-  int i, startCount = 1, primeCount = 0, lastPrime=1;
+  int i, startCount = 1, primeCount = 0;
 
   clock_t begin = clock();
 
-  // run sieve
-  sieve = eratosthenes(COUNT_TO);
-
   printf("\n");
   for (i = 1; i <= COUNT_TO; i++) {
-    if (sieve[i-1] >= lastPrime) {
-      lastPrime = sieve[i-1];
-      primeCount++;
-    }
-    if (i % COUNT_BY == 0) {
-        //printf("%d primes between %d and %d (inclusive)\n", primeCount, startCount, i);
-        if (primeCount < stats[0]) {
-          stats[0] = primeCount;
-        }
-        if (primeCount > stats[1]) {
-          stats[1] = primeCount;
-        }
 
-        stats[2] = stats[2] + primeCount;
-        primeCount = 0;
-        startCount = i+1;
+    if (isPrime(i)){primeCount++;}
+    if (i % COUNT_BY == 0) {
+      printf("%d primes between %d and %d (inclusive)\n", primeCount, startCount, i);
+
+      if (primeCount < stats[0]) {
+	stats[0] = primeCount;
+      }
+      if (primeCount > stats[1]) {
+	stats[1] = primeCount;
+      }
+
+      stats[2] = stats[2] + primeCount;
+      primeCount = 0;
+      startCount = i + 1;
     }
   }
 
