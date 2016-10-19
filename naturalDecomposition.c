@@ -8,7 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
+//#include <time.h>
 #include "eratosthenes.c"
 
 int main(int argc, char * argv[]) {
@@ -22,7 +22,7 @@ int main(int argc, char * argv[]) {
   }
   sscanf(argv[1], "%ld", &max);
 
-  //run sieve
+  // run sieve
   sieve = eratosthenes(max);
 
   // display natural decomposition
