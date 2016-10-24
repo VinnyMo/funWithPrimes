@@ -3,11 +3,14 @@
   Date:   October 18, 2016
 */
 
+#include <stdlib.h>
+
 /******************************************************************************
-* Function sieve returns 1st degree (1 dimensional) Sieve of Eratosthenes of  *
-   size n                                                                     *
+* Function eratosthenesFull returns array of decomposed naturals of size n.   *
+*  this is not quite standard for a Sieve of Eratosthenes as it is typically  *
+*  used to find prime numbers, not "natural decomposition".                   *
 ******************************************************************************/
-long unsigned int * eratosthenes(long unsigned int n) {
+long unsigned int *eratosthenesFull(long unsigned int n) {
 
   long unsigned int *sieve, i, j;
 
@@ -29,3 +32,45 @@ long unsigned int * eratosthenes(long unsigned int n) {
   return sieve;
 
 } // end eratosthenes
+
+
+/******************************************************************************
+* Function eratosthenesPrime returns array of prime numbers between 1 and n.  *
+*  Also assigns number of primes in returned array to size.                   *
+******************************************************************************/
+long unsigned int *eratosthenesPrime(long unsigned int n,
+                                     long unsigned int *size) {
+
+  long unsigned int *sieve, *primes, primeCount, lastPrime, i;
+
+  // run sieve
+  sieve = eratosthenesFull(n);
+
+  // get primeCount
+  primeCount=0;
+  lastPrime=1;
+  for (i = 0; i < n; i++) {
+    if (sieve[i] >= lastPrime) {
+      lastPrime = sieve[i];
+      primeCount++;
+    } // end if
+  } // end for
+  *size=primeCount;
+
+  // allocate primes memory
+  primes = (long unsigned int *) malloc(sizeof(long unsigned int)*primeCount);
+
+  // build primes
+  primeCount=0;
+  lastPrime=1;
+  for (i = 0; i < n; i++) {
+    if (sieve[i] >= lastPrime) {
+      lastPrime = sieve[i];
+      primes[primeCount] = sieve[i];
+      primeCount++;
+    } // end if
+  } // end for
+
+  return primes;
+
+} // end eratosthenesPrime

@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
   clock_t begin = clock();
 
   // run sieve
-  sieve = eratosthenes(COUNT_TO);
+  sieve = eratosthenesFull(COUNT_TO);
 
   printf("\n");
   for (i = 1; i <= COUNT_TO; i++) {
@@ -57,6 +57,6 @@ int main(int argc, char * argv[]) {
   printf("Lowest frequency per %d: %d\n", COUNT_BY, stats[0]);
   printf("Highest frequency per %d: %d\n", COUNT_BY, stats[1]);
   printf("Total Primes under %d: %d\n", COUNT_TO, stats[2]);
-  printf("Average frequency: %0.3lf% (to %d)\n\n", 100 * ((double) stats[2] / (double) COUNT_TO), COUNT_TO);
+  printf("Average frequency: %0.3lf%% (to %d)\n\n", 100 * ((double) stats[2] / (double) COUNT_TO), COUNT_TO);
 
 }
