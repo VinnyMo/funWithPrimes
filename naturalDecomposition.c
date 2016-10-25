@@ -11,41 +11,37 @@
 #include <unistd.h>
 //#include <time.h>
 #include "eratosthenes.c"
-#include <time.h>
-
-
 
 int main(int argc, char * argv[]) {
 
-  long unsigned int max, *sieve, i, lastPrime=1, j, resize;
-  timespec {tv_sec=0; tv_nsec=100;};
+  long unsigned int max, *sieve, i, lastPrime=1, j;
+  FILE *f = fopen("naturalDecomposition.txt", "w");
+  if (f == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
 
   // get sieve size
-  if (argc != 3) {
-    printf("Usage: %s <followed by [NAT] maximum followed by [INT] resize>\n", argv[0]);
+  if (argc != 2) {
+    printf("Usage: %s <followed by [NAT] maximum>\n", argv[0]);
     exit(-1);
   }
   sscanf(argv[1], "%ld", &max);
-  sscanf(argv[2], "%ld", &resize);
 
   // run sieve
   sieve = eratosthenesFull(max);
 
   // display natural decomposition
+  fprintf(f,"{");
   for (i = 0; i < max; i++) {
     if (sieve[i] >= lastPrime) {
       lastPrime = sieve[i];
-      //printf("%ld} {", sieve[i]);
+      fprintf(f,"%ld}\n{", sieve[i]);
     } else {
-      //printf("sieve[i]: %ld;",sieve[i]);
-      for (j=0;j<sieve[i];j++) {
-        printf("*");
-      }
-      nanosleep();
-      printf("\n");
+      fprintf(f,"%ld ",sieve[i]);
     }
   }
 
-  printf("\n");
+  printf("\nDone.\n\n");
 
 }
