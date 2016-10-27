@@ -4,6 +4,7 @@
 */
 
 #include <stdlib.h>
+#include <pthread.h>
 
 /******************************************************************************
 * Function eratosthenesFull returns array of decomposed naturals of size n.   *
