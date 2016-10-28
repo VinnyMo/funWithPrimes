@@ -6,6 +6,13 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+// definitions
+#define TRUE 1
+#define FALSE 0
+
+// global variables
+int *primeBoolArray;
+
 /******************************************************************************
 * Function eratosthenesFull returns array of decomposed naturals of size n.   *
 *  this is not quite standard for a Sieve of Eratosthenes as it is typically  *
