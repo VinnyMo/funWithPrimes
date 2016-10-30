@@ -23,7 +23,7 @@ int main(int argc, char * argv[]) {
   clock_t begin = clock();
 
   // get prime array
-  primes = eratosthenesPrime(max, &numPrimes);
+  primes = pth_eratosthenesPrime(max, &numPrimes);
 
   // display prime list
   for (i = 0; i < numPrimes; i++) {
@@ -32,7 +32,7 @@ int main(int argc, char * argv[]) {
   printf("\n");
 
   clock_t end = clock();
-  double time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
+  double time_spent = (double) (end - begin) / (CLOCKS_PER_SEC*numberOfThreads);
 
   printf("\nCPU execution time: %0.3fs\n\n", time_spent);
 

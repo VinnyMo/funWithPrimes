@@ -1,10 +1,31 @@
 /*
-  Author: Vincent T. Mossman
-  Date:   October 18, 2016
+  Author:  Vincent T. Mossman
+  Updated: October 30, 2016
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <pthread.h>
+
+// content summary
+/*long unsigned int *eratosthenesFull(long unsigned int n);
+  /* eratosthenesFull returns an array of size n containing all numbers between
+      1 (index 0) and n (index n-1) that have been decomposed to their most
+      basic homogeneous components.
+      */
+/*long unsigned int *eratosthenesPrime(long unsigned int n,
+                                     long unsigned int *size)
+  /* eratosthenesPrime returns an array of unpredictable size (guaranteed to be
+     less than n, if n>3) containing all prime numbers between 1 and n
+     (inclusive).
+     */
+/*long unsigned int *pth_eratosthenesPrime(long unsigned int n,
+                                         long unsigned int *size)
+  /* pth_eratosthenesPrime takes advantage of multicore processing using
+      pthreads to generate an array of unpredictable size (guaranteed to be less
+      than n, if n>3) containing all prime numbers between 1 and n (inclusive).
+      */
+void *threadPartialSieve(void *rank);
 
 // definitions
 #define TRUE 1
@@ -13,6 +34,7 @@
 // global variables
 int *isPrimeArray;
 int numberOfThreads = 4;
+long unsigned int globalN;
 
 /******************************************************************************
 * Function eratosthenesFull returns array of decomposed naturals of size n.   *
@@ -28,7 +50,7 @@ long unsigned int *eratosthenesFull(long unsigned int n) {
   for (i = 0; i < n; i++) {
     sieve[i] = 1;
   } // end for
-  
+
   // run sieve
   for (i = 0; i < n; i++) {
     for (j = i; j < n; j+=(i+1)) {
@@ -84,94 +106,73 @@ long unsigned int *eratosthenesPrime(long unsigned int n,
 } // end eratosthenesPrime
 
 /******************************************************************************
-* Function pth_eratosthenesFull is a parallelized - but reduced - sieve       *
+* Function pth_eratosthenesPrime is a parallelized - but reduced - sieve      *
 ******************************************************************************/
-long unsigned int *pth_eratosthenesFull(long unsigned int n) {
+long unsigned int *pth_eratosthenesPrime(long unsigned int n,
+                                         long unsigned int *size) {
 
-  long unsigned int *sieve, i, j;
+  int errorCode;
+  long rank;
+  long unsigned int *primes, i, j, primeCount;
+  pthread_t * threadHandles = (pthread_t *)
+                              malloc(numberOfThreads * sizeof(pthread_t));
+  globalN=n;
 
-  // allocate sieve memory and initialize
-  sieve = (long unsigned int *) malloc(sizeof(long unsigned int)*n);
-  for (i = 0; i < n; i++) {
-    sieve[i] = 1;
-  } // end for
-  
-  // allocate global "isPrimeArray" memory and initialize to all "Prime"
+  // allocate global "isPrimeArray" memory and initialize all to "Prime"
   isPrimeArray = (int *) malloc(sizeof(int)*n);
   for (i = 0; i < n; i++) {
-    isPrimeArray[i] = TRUE; 
+    isPrimeArray[i] = TRUE;
   }
-  
-  for (i = 0; i <  numberOfThreads; i ++) {
-    if (errorCode = pthread_create(&threadHandles[i], NULL, threadPartialSieve, (void *) i) != 0) {
-      printf("pthread %d failed to be created with error code %d\n", i, errorCode);
+
+  for (rank = 0; rank < numberOfThreads; rank++) {
+    if (errorCode = pthread_create(&threadHandles[rank], NULL, threadPartialSieve, (void *) rank) != 0) {
+      printf("pthread %ld failed to be created with error code %d\n", rank, errorCode);
     }
   }
 
-  for (i = 0; i < numberOfThreads; i++) {
-    if (errorCode = pthread_join(threadHandles[i], (void **) NULL) != 0) {
-      printf("pthread %d failed to be joined with error code %d\n", i, errorCode);
-    } 
+  for (rank = 0; rank < numberOfThreads; rank++) {
+    if (errorCode = pthread_join(threadHandles[rank], (void **) NULL) != 0) {
+      printf("pthread %ld failed to be joined with error code %d\n", rank, errorCode);
+    }
   }
-  
-  // run sieve
+
+  // get primeCount
+  primeCount=0;
   for (i = 0; i < n; i++) {
-    for (j = i; j < n; j+=(i+1)) {
-      if (sieve[j] == 1) {
-        sieve[j] = i+1;
-      } // end if
+    if (isPrimeArray[i] == TRUE) {
+      primeCount++;
+    } // end if
+  } // end for
+  *size=primeCount;
+
+  // allocate primes memory
+  primes = (long unsigned int *) malloc(sizeof(long unsigned int)*primeCount);
+
+  // build primes
+  primeCount=0;
+  for (i = 0; i < n; i++) {
+    if (isPrimeArray[i] == TRUE) {
+      primes[primeCount] = i+1;
+      primeCount++;
+    } // end if
+  } // end for
+
+  return primes;
+
+} // end pth_eratosthenesPrime
+
+void *threadPartialSieve(void *rank) {
+
+  long unsigned int i, j;
+
+  // run sieve
+  for (i = (long unsigned int) rank+1; i < globalN; i+=(numberOfThreads+1)) {
+    for (j = i; j < globalN; j+=(i+1)) {
+      if (j > i) {
+        isPrimeArray[j] = FALSE;
+      }
+      //printf("Testing from thread %ld\n", (long unsigned int) rank);
     } // end for (j)
   } // end for (i)
 
-  return sieve;
-
-} // end pth_eratosthenes
-
-void * threadPartialSieve(void * rank) {
-
-  if (globalIsPrime == false) {
-    pthread_exit(0);
-  }
-
-  long int n = globalN;
-  long int i = 2;
- 
-  if (n > numberOfThreads * 2) {
-
-    int checkRange = (n / numberOfThreads) / 2;
-
-    if ((long int) rank < (long int) numberOfThreads - 1) {
-      for (i = 2 + ((long int) rank * checkRange); i <= (((long int) rank + 1) * checkRange) + 1; i++) {
-          if (n % i == 0) {
-	  globalIsPrime = false;
-	  break;
-	}
-      }
-    }
-    else {
-      for (i = (numberOfThreads - 1) * checkRange; i <= (n / 2); i++) {
-	if (n % i == 0) {
-	  globalIsPrime = false;
-	  break;
-	}
-      }
-    }
-
-  }
-
-  else {
-
-    while (n % i != 0) {
-      if (i > (n / 2)) {
-	i = n;
-	break;
-      }
-      i++;
-    }
-    if (i < n) {
-      globalIsPrime = false;
-    }
- 
-  }
-
-}
+} // end threadPartialSieve
