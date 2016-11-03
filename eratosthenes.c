@@ -1,6 +1,6 @@
 /*
   Author:  Vincent T. Mossman
-  Updated: October 30, 2016
+  Updated: November 2, 2016
 */
 
 #include <stdlib.h>
@@ -8,24 +8,28 @@
 #include <pthread.h>
 
 // content summary
-/*long unsigned int *eratosthenesFull(long unsigned int n);
+long unsigned int *eratosthenesFull(long unsigned int n);
   /* eratosthenesFull returns an array of size n containing all numbers between
       1 (index 0) and n (index n-1) that have been decomposed to their most
       basic homogeneous components.
       */
-/*long unsigned int *eratosthenesPrime(long unsigned int n,
-                                     long unsigned int *size)
+long unsigned int *eratosthenesPrime(long unsigned int n,
+                                     long unsigned int *size);
   /* eratosthenesPrime returns an array of unpredictable size (guaranteed to be
-     less than n, if n>3) containing all prime numbers between 1 and n
-     (inclusive).
-     */
-/*long unsigned int *pth_eratosthenesPrime(long unsigned int n,
-                                         long unsigned int *size)
+      less than n, if n>3) containing all prime numbers between 1 and n
+      (inclusive).
+      */
+long unsigned int *pth_eratosthenesPrime(long unsigned int n,
+                                         long unsigned int *size);
   /* pth_eratosthenesPrime takes advantage of multicore processing using
       pthreads to generate an array of unpredictable size (guaranteed to be less
       than n, if n>3) containing all prime numbers between 1 and n (inclusive).
       */
 void *threadPartialSieve(void *rank);
+  /* threadPartialSieve uses pthreads to split the work of a reduced Sieve of
+      Eratosthenes between a number of threads. Parallelized, it can only be
+      used to find a list of prime numbers, not a full decomposition.
+      */
 
 // definitions
 #define TRUE 1
@@ -170,8 +174,7 @@ void *threadPartialSieve(void *rank) {
     for (j = i; j < globalN; j+=(i+1)) {
       if (j > i) {
         isPrimeArray[j] = FALSE;
-      }
-      //printf("Testing from thread %ld\n", (long unsigned int) rank);
+      } // end if
     } // end for (j)
   } // end for (i)
 
