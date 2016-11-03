@@ -166,7 +166,7 @@ void *threadPartialSieve(void *rank) {
   long unsigned int i, j;
 
   // run sieve
-  for (i = (long unsigned int) rank+1; i < globalN; i+=(numberOfThreads+1)) {
+  for (i = (long unsigned int) rank+1; i < globalN; i+=numberOfThreads) {
     for (j = i; j < globalN; j+=(i+1)) {
       if (j > i) {
         isPrimeArray[j] = FALSE;

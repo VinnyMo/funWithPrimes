@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include "timer.h"
 #include "eratosthenes.c"
 
 int main(int argc, char * argv[]) {
@@ -18,25 +18,26 @@ int main(int argc, char * argv[]) {
   }
 
   int COUNT_TO, COUNT_BY;
-  long unsigned int *sieve;
+  long unsigned int *primes, numPrimes;
   sscanf(argv[1], "%d", &COUNT_TO);
   sscanf(argv[2], "%d", &COUNT_BY);
   int stats[3] = {COUNT_BY + 1, 0, 0}; //FREQ MIN, FREQ MAX, TOT
-  int i, startCount = 1, primeCount = 0, lastPrime=1;
+  int i, startCount = 1, primeCount = 0, lastPrime = 0;
+  double start, finish, elapsed;
 
-  clock_t begin = clock();
+  GET_TIME(start);
 
   // run sieve
-  sieve = eratosthenesFull(COUNT_TO);
+  primes = pth_eratosthenesPrime(COUNT_TO, &numPrimes);
 
   printf("\n");
   for (i = 1; i <= COUNT_TO; i++) {
-    if (sieve[i-1] >= lastPrime) {
-      lastPrime = sieve[i-1];
+    if (primes[lastPrime] <= COUNT_BY+startCount-1 && lastPrime < numPrimes) {
       primeCount++;
+      lastPrime++;
     }
     if (i % COUNT_BY == 0) {
-        //printf("%d primes between %d and %d (inclusive)\n", primeCount, startCount, i);
+        printf("%d primes between %d and %d (inclusive)\n", primeCount, startCount, i);
         if (primeCount < stats[0]) {
           stats[0] = primeCount;
         }
@@ -50,10 +51,10 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  clock_t end = clock();
-  double time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
+  GET_TIME(finish);
+  elapsed=finish-start;
 
-  printf("\nCPU execution time: %0.3lfs\n", time_spent);
+  printf("\nCPU execution time: %0.6lfs\n", elapsed);
   printf("Lowest frequency per %d: %d\n", COUNT_BY, stats[0]);
   printf("Highest frequency per %d: %d\n", COUNT_BY, stats[1]);
   printf("Total Primes under %d: %d\n", COUNT_TO, stats[2]);
