@@ -30,10 +30,8 @@ int main(int argc, char * argv[]) {
     if (allEqual(degreeTwo,2,dif)) {
       printf("{%ld %ld} ",dif,dif);
       degreeTwo[0]=0; degreeTwo[1]=0;
-    } else if (degreeTwo[0]=dif) {
-      degreeTwo[1]=dif;
     } else {
-      degreeTwo[0]=dif;
+      appendDif(degreeTwo,2,dif);
     }
     //printf("%ld ", dif);
   }
@@ -51,4 +49,14 @@ bool allEqual(long unsigned int *array,
     } // end if
   } // end for
   return allMatch;
+}
+
+void appendDif(long unsigned int *array,
+               long unsigned int arraySize,
+               long unsigned int dif) {
+  long unsigned int i=0;
+  while (array[i]==dif) {
+    i++;
+  }
+  array[i]=dif;
 }

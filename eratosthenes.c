@@ -1,10 +1,11 @@
 /*
   Author:  Vincent T. Mossman
-  Updated: November 2, 2016
+  Updated: November 5, 2016
 */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include <pthread.h>
 
 // content summary
@@ -169,7 +170,7 @@ void *threadPartialSieve(void *rank) {
   long unsigned int i, j;
 
   // run sieve
-  for (i = (long unsigned int) rank+1; i < globalN; i+=numberOfThreads) {
+  for (i = (long unsigned int) rank+1; i < sqrt(globalN); i+=numberOfThreads) {
     for (j = i; j < globalN; j+=(i+1)) {
       if (i > (long unsigned int) rank+1 && (i+1)%2 == 0) {break;}
       if (j > i) {
