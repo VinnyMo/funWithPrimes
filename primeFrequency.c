@@ -25,19 +25,24 @@ int main(int argc, char * argv[]) {
   int i, startCount = 1, primeCount = 0, lastPrime = 0;
   double start, finish, elapsed;
 
+  FILE *f = fopen("primeFrequency.txt", "w");
+  if (f == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }f
+
   GET_TIME(start);
 
   // run sieve
   primes = pth_eratosthenesPrime(COUNT_TO, &numPrimes);
 
-  printf("\n");
   for (i = 1; i <= COUNT_TO; i++) {
     if (primes[lastPrime] <= COUNT_BY+startCount-1 && lastPrime < numPrimes) {
       primeCount++;
       lastPrime++;
     }
     if (i % COUNT_BY == 0) {
-        printf("%d primes between %d and %d (inclusive)\n", primeCount, startCount, i);
+        fprintf(f,"%d primes between %d and %d (inclusive)\n", primeCount, startCount, i);
         if (primeCount < stats[0]) {
           stats[0] = primeCount;
         }
@@ -54,10 +59,11 @@ int main(int argc, char * argv[]) {
   GET_TIME(finish);
   elapsed=finish-start;
 
+  printf("\nDone.\n");
   printf("\nCPU execution time: %0.6lfs\n", elapsed);
-  printf("Lowest frequency per %d: %d\n", COUNT_BY, stats[0]);
-  printf("Highest frequency per %d: %d\n", COUNT_BY, stats[1]);
-  printf("Total Primes under %d: %d\n", COUNT_TO, stats[2]);
-  printf("Average frequency: %0.3lf%% (to %d)\n\n", 100 * ((double) stats[2] / (double) COUNT_TO), COUNT_TO);
+  fprintf(f,"\nLowest frequency per %d: %d\n", COUNT_BY, stats[0]);
+  fprintf(f,"Highest frequency per %d: %d\n", COUNT_BY, stats[1]);
+  fprintf(f,"Total Primes under %d: %d\n", COUNT_TO, stats[2]);
+  fprintf(f,"Average frequency: %0.3lf%% (to %d)\n\n", 100 * ((double) stats[2] / (double) COUNT_TO), COUNT_TO);
 
 }

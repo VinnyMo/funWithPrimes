@@ -23,7 +23,7 @@ int main(int argc, char * argv[]) {
   long unsigned int max, i, *primes, numPrimes, dif, degreeTwo[2] = {0, 0};
   sscanf(argv[1], "%ld", &max);
 
-  primes = eratosthenesPrime(max, &numPrimes);
+  primes = pth_eratosthenesPrime(max, &numPrimes);
 
   for (i = 1; i < numPrimes; i++) {
     dif = primes[i] - primes[i-1];
