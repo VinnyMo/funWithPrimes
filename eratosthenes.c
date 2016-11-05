@@ -118,8 +118,7 @@ long unsigned int *pth_eratosthenesPrime(long unsigned int n,
   int errorCode;
   long rank;
   long unsigned int *primes, i, j, primeCount;
-  pthread_t * threadHandles = (pthread_t *)
-                              malloc(numberOfThreads * sizeof(pthread_t));
+  pthread_t * threadHandles = (pthread_t *) malloc(numberOfThreads * sizeof(pthread_t));
   globalN=n;
 
   // allocate global "isPrimeArray" memory and initialize all to "Prime"
@@ -172,7 +171,7 @@ void *threadPartialSieve(void *rank) {
   // run sieve
   for (i = (long unsigned int) rank+1; i < globalN; i+=numberOfThreads) {
     for (j = i; j < globalN; j+=(i+1)) {
-      if (i>(long unsigned int) rank+1 && (i+1)%2==0) {break;}
+      if (i > (long unsigned int) rank+1 && (i+1)%2 == 0) {break;}
       if (j > i) {
         isPrimeArray[j] = FALSE;
       } // end if
