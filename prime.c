@@ -18,15 +18,15 @@ int main(int argc, char * argv[]) {
   }
 
   long int test;
-  sscanf(argv[1], "%d", &test);
+  sscanf(argv[1], "%lu", &test);
 
   clock_t begin = clock();
-   
+
   if (isPrime(test)) {
-    printf("\n%d is prime\n", test);
+    printf("\n%lu is prime\n", test);
   }
   else {
-    printf("\n%d is not prime\n", test);
+    printf("\n%lu is not prime\n", test);
   }
 
   clock_t end = clock();
