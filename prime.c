@@ -26,7 +26,7 @@ int main(int argc, char * argv[]) {
     printf("\n%lu is prime\n", test);
   }
   else {
-    printf("\n%lu is not prime\n", test);
+    printf("\n%lu is composite\n", test);
   }
 
   clock_t end = clock();
