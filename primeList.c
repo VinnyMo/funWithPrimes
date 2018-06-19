@@ -1,7 +1,7 @@
 /* Some fun with prime numbers
    Author:     Vincent T. Mossman
-   Compile by: gcc -o primeList primeList.c
-   Run by:     ./prime
+   Compile by: gcc primeList.c -pthread -lm -o primeList
+   Run by:     ./primeList [NAT to list primes to]
 */
 
 #include "eratosthenes.c"
@@ -12,15 +12,22 @@
 
 int main(int argc, char * argv[]) {
 
-  if (argc != 2) {
+  if ((argc < 2) || (argc > 3)) {
     printf("Usage: %s <followed by [NAT to list primes to]>\n", argv[0]);
     exit(-1);
   }
 
   double p_start, p_finish, p_elapsed;
   double start, finish, elapsed;
-  long unsigned int max, *primes, numPrimes, i;
-  sscanf(argv[1], "%ld", &max);
+  long unsigned int max, min, *primes, numPrimes, i;
+
+  if (argc == 2) {
+    min = 0;
+    sscanf(argv[1], "%ld", &max);
+  } else if (argc == 3) {
+    sscanf(argv[1], "%ld", &min);
+    sscanf(argv[2], "%ld", &max);
+  }
 
   GET_TIME(start);
 
@@ -33,7 +40,9 @@ int main(int argc, char * argv[]) {
 
   // display prime list
   for (i = 0; i < numPrimes; i++) {
-    printf("%ld, ",primes[i]);
+    if (primes[i] >= min) {
+      printf("%ld, ",primes[i]);
+    }
   }
   printf("\n");
 
