@@ -8,16 +8,16 @@ function isPrime(n) {
   // initialize divisor
   var div = 2;
 
-  // find divisor (if any)
+  // determine lowest divisor (if any)
   while (n % div != 0) {
-    if (i > (n / 2)) {
+    if (div > Math.sqrt(n)) {
       div = n;
       break;
     } //end if
     i++;
   } //end while
 
-  // determine primality
+  // determine primality state
   if (div < n) {
     return false;
   } else {
