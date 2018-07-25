@@ -3,6 +3,9 @@
   Date:   July 24, 2018
 */
 
+/*
+isPrime returns TRUE if n is prime; else returns FALSE
+*/
 function isPrime(n) {
 
   // initialize divisor

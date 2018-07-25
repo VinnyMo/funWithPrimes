@@ -3,6 +3,9 @@
   Date:   July 24, 2018
 */
 
+/*
+factors returns array of integers between 1 and n inclusive which divide n
+*/
 function factors(n) {
 
   // initialize divisor and factors
@@ -20,4 +23,4 @@ function factors(n) {
 
   return factors;
 
-} //end isPrime
+} //end factors
