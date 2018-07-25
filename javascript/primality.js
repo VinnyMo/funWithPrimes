@@ -6,7 +6,7 @@
 function isPrime(n) {
 
   // initialize divisor
-  var div = 2;
+  let div = 2;
 
   // determine lowest divisor (if any)
   while (n % div != 0) {
@@ -14,10 +14,10 @@ function isPrime(n) {
       div = n;
       break;
     } //end if
-    i++;
+    div++;
   } //end while
 
-  // determine primality state
+  // determine primality
   if (div < n) {
     return false;
   } else {
