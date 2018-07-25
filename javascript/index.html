@@ -26,7 +26,7 @@
               document.getElementById("composite-factors").innerHTML = "and its " + factors(test).length + " factors are " + factors(test).toString();
               console.log(factors(test));
               if (arraySum(factors(test)) / 2 == test) {
-                document.getElementById("perfect-number").innerHTML = "And it is a perfect number";
+                document.getElementById("perfect-number").innerHTML = "And it is a <a href='#'>perfect number</a>";
               }
             }
           }
@@ -67,6 +67,11 @@
       <p id="composite-factors"></p>
       <p id="perfect-number"></p>
       <p id="eratosthenes"></p>
+      <hr>
+      <h2><u>Running Notes</u></h2>
+      <ul>
+        <li>Make eratosthenesFull more like C version (natural decomposition)</li>
+      </ul>
 
     </body>
 </html>
